@@ -30,16 +30,14 @@ export type UserFormProps = ComponentProps<
 >;
 
 const formSchema = z.object({
-  FirstName: z.string().min(1).max(256),
-  LastName: z.string().max(256).optional(),
-  Username: z.string().max(256).optional(),
-  Email: z.string().email().optional(),
-  Company: z.string().max(256).optional(),
+  FirstName: z.string().min(1).max(255),
+  LastName: z.string().max(255),
+  Email: z.string().email(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
-const filedNames = Object.keys(formSchema.shape) as (keyof FormSchema)[];
+const fieldNames = Object.keys(formSchema.shape) as (keyof FormSchema)[];
 
 export function UserForm({ trigger, defaultValues, onSubmit, ...props }: UserFormProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +47,7 @@ export function UserForm({ trigger, defaultValues, onSubmit, ...props }: UserFor
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: { ...filedNames.reduce((acc, name) => ({ ...acc, [name]: "" }), {}), ...defaultValues },
+    defaultValues: { ...fieldNames.reduce((acc, name) => ({ ...acc, [name]: "" }), {}), ...defaultValues },
   });
 
   const handleSubmit: SubmitHandler<FormSchema> = async (values) => {
@@ -100,7 +98,7 @@ export function UserForm({ trigger, defaultValues, onSubmit, ...props }: UserFor
             className="flex flex-col gap-2"
             onSubmit={form.handleSubmit(handleSubmit)}
           >
-            {filedNames.map((fieldName) => (
+            {fieldNames.map((fieldName) => (
               <FormField
                 key={fieldName}
                 control={form.control}
