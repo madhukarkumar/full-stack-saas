@@ -13,8 +13,8 @@ export type HeaderProps = ComponentProps<"header">;
 
 const links = [
   { title: "Home", href: ROUTES.ROOT },
-  { title: "Users", href: ROUTES.USERS },
-  { title: "Chat", href: ROUTES.CHAT },
+  { title: "Post", href: ROUTES.USERS },
+  { title: "Login", href: ROUTES.CHAT },
 ];
 
 export function Header({ className, ...props }: HeaderProps) {
@@ -31,8 +31,7 @@ export function Header({ className, ...props }: HeaderProps) {
       )}
     >
       <Link href={ROUTES.ROOT} className="flex items-center">
-        <Logo className="h-8 w-auto" />
-        <span className="ml-2 text-xl font-semibold text-gray-800 dark:text-white">AI Startup Leaderboard</span>
+        <Logo />
       </Link>
       <nav className="flex items-center gap-2">
         {links.map((link) => (
