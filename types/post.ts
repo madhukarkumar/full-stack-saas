@@ -11,9 +11,13 @@ export type PostRow = {
 };
 
 export interface Post {
-  post_id: string;
+  post_id: number; // Changed from string to number
   postName: string;
   postDetails: string;
   postURL: string;
-  postVotes: number; // Add this line
+  postVotes: number;
+  userEmail: string;
+  CreatedAt: string;
+  UpdatedAt: string;
+  postImageURL: string;
 }

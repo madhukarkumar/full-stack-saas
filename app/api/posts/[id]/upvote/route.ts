@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { updatePostVotes } from "@/lib/post/update-votes";
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
