@@ -6,7 +6,7 @@ export async function updatePostVotes(postId: number): Promise<void> {
   console.log("eleganceServerClient.controllers methods:", Object.keys(eleganceServerClient.controllers || {}));
 
   try {
-    if (typeof eleganceServerClient.controllers?.updateMany === 'function') {
+    if (typeof eleganceServerClient.controllers?.updateMany === "function") {
       console.log("Executing updateMany using eleganceServerClient.controllers.updateMany");
       const result = await eleganceServerClient.controllers.updateMany({
         collection: "startupPosts",

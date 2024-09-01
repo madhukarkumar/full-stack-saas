@@ -18,15 +18,15 @@ export function PostCard({ post }: PostCardProps) {
   const handleUpvote = async () => {
     try {
       const response = await fetch(`/api/posts/${post.post_id}/upvote`, {
-        method: 'POST',
+        method: "POST",
       });
       if (response.ok) {
         setVotes(votes + 1);
       } else {
-        console.error('Failed to upvote');
+        console.error("Failed to upvote");
       }
     } catch (error) {
-      console.error('Error upvoting:', error);
+      console.error("Error upvoting:", error);
     }
   };
 
@@ -34,7 +34,7 @@ export function PostCard({ post }: PostCardProps) {
   const imageUrl = `https://picsum.photos/seed/${post.post_id}/400/300`;
 
   return (
-    <Card className="w-full overflow-hidden border-2 border-gray-300 rounded-lg shadow-md">
+    <Card className="w-full overflow-hidden rounded-lg border-2 border-gray-300 shadow-md">
       <CardHeader className="p-0">
         <div className="relative h-48 w-full overflow-hidden">
           <Image
@@ -47,15 +47,25 @@ export function PostCard({ post }: PostCardProps) {
         </div>
       </CardHeader>
       <CardContent className="p-4">
-        <h2 className="text-xl font-bold mb-2">{post.postName}</h2>
-        <p className="text-sm text-gray-600 mb-4">{post.postDetails}</p>
+        <h2 className="mb-2 text-xl font-bold">{post.postName}</h2>
+        <p className="mb-4 text-sm text-gray-600">{post.postDetails}</p>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex justify-between items-center">
-        <Button variant="outline" size="sm" onClick={handleUpvote} className="rounded-md">
+      <CardFooter className="flex items-center justify-between p-4 pt-0">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleUpvote}
+          className="rounded-md"
+        >
           <ChevronUp className="mr-1 h-4 w-4" />
           Upvote {votes}
         </Button>
-        <a href={post.postURL} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+        <a
+          href={post.postURL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 hover:underline"
+        >
           View
         </a>
       </CardFooter>

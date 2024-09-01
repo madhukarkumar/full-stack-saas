@@ -44,7 +44,7 @@ export function PostsGrid() {
           className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
           {row.map((post) => (
-            <PostCard 
+            <PostCard
               key={post.post_id}
               post={post}
             />

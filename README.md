@@ -11,19 +11,20 @@ Features
 6. Example Pages: Includes a chatbot page with a simple chat interface and a users table page with CRUD operations.
 
 ## Section 1: Local Development Setup
+
 ### 1.1 Prerequisites
-Node.js and npm/yarn: Ensure you have Node.js and a package manager (npm or yarn) installed. 
+
+Node.js and npm/yarn: Ensure you have Node.js and a package manager (npm or yarn) installed.
 SingleStoreDB Instance: Sign up for a SingleStore Cloud account or install SingleStore locally. Get your database credentials (hostname, port, username, password, database name).
 OpenAI API Key (Optional): Obtain an API key from OpenAI for accessing their language models. You can also use elegance-sdk customizer to use your own model end point.
 
 1.2 Installation
 
 Clone the Repository:
-    Bash
+Bash
 
     git clone https://github.com/madhukarkumar/sinenext-starter.git
     cd sinenext-starter
-
 
 Environment Variables:
 
@@ -39,12 +40,14 @@ Environment Variables:
     SINGLE_STORE_DB_NAME="your_single_store_db_name"
 
 Install Dependencies:
+
 ```Bash
 
 npm install
 ```
 
 Start Development Server:
+
 ```Bash
 
 npm run dev
@@ -65,6 +68,7 @@ Customizers:
     withMaxTokens: Limits the length of the generated response.
 
 Example: Creating a custom query endpoint
+
 ```TypeScript
 
 // app/api/customQuery/route.ts
@@ -83,6 +87,7 @@ return NextResponse.json(results);
 Section 3: Building Chatbot Pages with Chat Component
 
 Create a New Page (e.g., app/chatbot/page.tsx):
+
 ```TypeScript
 
     import Chat from '@/components/chat/Chat'; // Assuming you have this component
@@ -91,13 +96,14 @@ Create a New Page (e.g., app/chatbot/page.tsx):
         return (
             <main className="flex min-h-screen flex-col items-center justify-center p-24">
                 <h1>SingleStore Chatbot</h1>
-                <Chat /> 
+                <Chat />
             </main>
         );
     }
 ```
 
 The Chat component (app/components/chat/Chat.tsx):
+
 ```TypeScript
 
 'use client';
@@ -117,16 +123,16 @@ const [input, setInput] = useState("");
         setInput("");
 
         const response = await eleganceClient.askSingleStore({ question: input });
-        setMessages(prev => [...prev, { role: 'assistant', content: response.text }]); 
+        setMessages(prev => [...prev, { role: 'assistant', content: response.text }]);
     };
 
     return (
         <div>
             {/* Render MessageList here */}
             <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    value={input} 
+                <input
+                    type="text"
+                    value={input}
                     onChange={(e) => setInput(e.target.value)}
                     // ... other props for styling
                 />

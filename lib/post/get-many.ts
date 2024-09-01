@@ -9,8 +9,8 @@ export async function getPosts(filter: { offset?: number; limit?: number } = {})
     extra: `ORDER BY CreatedAt DESC LIMIT ${limit} OFFSET ${offset}`,
   });
 
-  return posts.map(post => ({
+  return posts.map((post) => ({
     ...post,
-    postDetails: post.postDetails.substring(0, 100) + (post.postDetails.length > 100 ? '...' : '') // Truncate details for the card view
+    postDetails: post.postDetails.substring(0, 100) + (post.postDetails.length > 100 ? "..." : ""), // Truncate details for the card view
   }));
 }

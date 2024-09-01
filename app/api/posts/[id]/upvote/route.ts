@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updatePostVotes } from "@/lib/post/update-votes";
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   console.log("Upvote route called with params:", params);
-  
+
   try {
     const postId = parseInt(params.id, 10);
     if (isNaN(postId)) {

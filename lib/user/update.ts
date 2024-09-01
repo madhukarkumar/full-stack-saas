@@ -1,7 +1,10 @@
 import { eleganceServerClient } from "@/lib/elegance/server-client";
 import { User } from "@/types/user";
 
-export function updateUser(id: User["ID"], value: Partial<Omit<User, "ID" | "CreatedAt" | "UpdatedAt" | "avatar">>) {
+export function updateUser(
+  id: User["ID"],
+  value: Partial<Omit<User, "ID" | "CreatedAt" | "UpdatedAt" | "avatar">>,
+) {
   const setValues = Object.entries(value).map(([key, value]) => {
     return typeof value === "string" ? `${key} = '${value}'` : `${key} = ${value}`;
   });

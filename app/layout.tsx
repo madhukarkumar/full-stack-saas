@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 
 import "./globals.css";
 
-
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500"] });
 
 const title = `sin.Next Stack`;
