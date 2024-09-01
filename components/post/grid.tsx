@@ -12,7 +12,7 @@ export function PostsGrid() {
     async function fetchPosts() {
       const response = await fetch("/api/posts");
       const data = await response.json();
-      // Sort posts by upvotes in descending order
+      // Explicitly sort posts by upvotes in descending order
       const sortedPosts = data.sort((a: Post, b: Post) => b.upvotes - a.upvotes);
       setPosts(sortedPosts);
     }

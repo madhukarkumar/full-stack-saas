@@ -34,14 +34,15 @@ export function PostCard({ post }: PostCardProps) {
   const imageUrl = `https://picsum.photos/seed/${post.post_id}/400/300`;
 
   return (
-    <Card className="w-full">
+    <Card className="w-full overflow-hidden border-2 border-gray-300 rounded-lg shadow-md">
       <CardHeader className="p-0">
-        <div className="relative h-48 w-full">
+        <div className="relative h-48 w-full overflow-hidden">
           <Image
             src={imageUrl}
             alt={post.postName}
             layout="fill"
             objectFit="cover"
+            className="rounded-t-lg"
           />
         </div>
       </CardHeader>
@@ -50,7 +51,7 @@ export function PostCard({ post }: PostCardProps) {
         <p className="text-sm text-gray-600 mb-4">{post.postDetails}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between items-center">
-        <Button variant="outline" size="sm" onClick={handleUpvote}>
+        <Button variant="outline" size="sm" onClick={handleUpvote} className="rounded-md">
           <ChevronUp className="mr-1 h-4 w-4" />
           Upvote {votes}
         </Button>
