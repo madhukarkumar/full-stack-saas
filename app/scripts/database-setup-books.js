@@ -1,6 +1,7 @@
-const { ObjectId, createEleganceServerClient } = require("@singlestore/elegance-sdk/server");
 const { readFileSync } = require("fs");
 const path = require("path");
+
+const { ObjectId, createEleganceServerClient } = require("@singlestore/elegance-sdk/server");
 
 // Database connection configuration
 const dbConfig = {
