@@ -12,6 +12,7 @@ import { ComponentProps } from "@/types/ui";
 export type HeaderProps = ComponentProps<"header">;
 
 const links = [
+  { title: "Home", href: ROUTES.ROOT },
   { title: "Users", href: ROUTES.USERS },
   { title: "Chat", href: ROUTES.CHAT },
 ];
