@@ -3,24 +3,29 @@
 import { useEffect, useState } from "react";
 
 import { PostCard } from "@/components/post/card";
-import { Post } from "@/types/post";
+import { Post as PostType } from "@/types/post";
+
+// Ensure the Post type includes the upvotes property
+interface LocalPost extends PostType {
+  upvotes: number; // Add this line
+}
 
 export function PostsGrid() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<LocalPost[]>([]);
 
   useEffect(() => {
     async function fetchPosts() {
       const response = await fetch("/api/posts");
-      const data = await response.json();
+      const data: LocalPost[] = await response.json();
       // Explicitly sort posts by upvotes in descending order
-      const sortedPosts = data.sort((a: Post, b: Post) => b.upvotes - a.upvotes);
+      const sortedPosts = data.sort((a, b) => b.upvotes - a.upvotes);
       setPosts(sortedPosts);
     }
     fetchPosts();
   }, []);
 
   // Function to create rows of posts
-  const createRows = (posts: Post[], columns: number) => {
+  const createRows = (posts: LocalPost[], columns: number) => {
     const rows = [];
     for (let i = 0; i < posts.length; i += columns) {
       rows.push(posts.slice(i, i + columns));
@@ -34,9 +39,15 @@ export function PostsGrid() {
   return (
     <div className="grid gap-6">
       {rows.map((row, rowIndex) => (
-        <div key={rowIndex} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          key={rowIndex}
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+        >
           {row.map((post) => (
-            <PostCard key={post.post_id} post={post} />
+            <PostCard 
+              key={post.post_id}
+              post={post}
+            />
           ))}
         </div>
       ))}

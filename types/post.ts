@@ -10,4 +10,10 @@ export type PostRow = {
   postImageURL: string;
 };
 
-export type Post = PostRow;
+export interface Post {
+  post_id: string;
+  postName: string;
+  postDetails: string;
+  postURL: string;
+  postVotes: number; // Add this line
+}
