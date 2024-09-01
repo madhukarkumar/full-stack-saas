@@ -4,12 +4,13 @@ import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 
 import { cn } from "@/lib/utils";
+import { Header } from "@/components/header";
 
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500"] });
 
-const title = `sin.Next Stack`;
+const title = `AI Startup Leaderboard`;
 export const metadata: Metadata = {
   title: {
     default: title,
@@ -28,7 +29,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           "flex h-screen w-full min-w-80 max-w-full flex-col overflow-y-auto overflow-x-hidden",
         )}
       >
-        {children}
+        <Header />
+        <main className="flex-grow pt-16">
+          {children}
+        </main>
       </body>
     </html>
   );

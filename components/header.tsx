@@ -23,18 +23,24 @@ export function Header({ className, ...props }: HeaderProps) {
   return (
     <header
       {...props}
-      className={cn("flex w-full max-w-full items-center justify-between border-b p-4", className)}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 flex w-full items-center justify-between",
+        "bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700",
+        "px-4 py-3 shadow-sm",
+        className
+      )}
     >
-      <Link href={ROUTES.ROOT}>
-        <Logo />
+      <Link href={ROUTES.ROOT} className="flex items-center">
+        <Logo className="h-8 w-auto" />
+        <span className="ml-2 text-xl font-semibold text-gray-800 dark:text-white">AI Startup Leaderboard</span>
       </Link>
       <nav className="flex items-center gap-2">
         {links.map((link) => (
           <Button
             key={link.title}
             asChild
-            variant={pathname === link.href ? "default" : "outline"}
-            className="transition-none"
+            variant={pathname === link.href ? "default" : "ghost"}
+            className="transition-colors"
           >
             <Link href={link.href}>{link.title}</Link>
           </Button>
