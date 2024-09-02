@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -6,13 +5,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-interface CreatePostModalProps {
+export interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess: () => void;
 }
 
-const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) => {
-  const router = useRouter();
+const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSuccess }) => {
   const [postName, setPostName] = useState("");
   const [postDetails, setPostDetails] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -40,8 +39,8 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
       });
 
       if (response.ok) {
-        onClose();
-        router.refresh();
+        onSuccess();
+        handleClose();
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Failed to create post");

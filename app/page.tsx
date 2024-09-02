@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
+import CreatePostModal from "@/components/post/create-modal";
 import { PostsGrid } from "@/components/post/grid";
 import PostModal from "@/components/post/modal";
 import { Button } from "@/components/ui/button";
@@ -11,8 +12,9 @@ export default function HomePage() {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await fetch("/api/posts");
@@ -26,11 +28,11 @@ export default function HomePage() {
       console.error("Error fetching posts:", error);
     }
     setIsLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [fetchPosts]);
 
   const handlePostClick = (post: Post) => {
     setSelectedPost(post);
@@ -44,10 +46,16 @@ export default function HomePage() {
     fetchPosts();
   };
 
+  const handleCreatePostSuccess = () => {
+    fetchPosts();
+    setIsCreateModalOpen(false);
+  };
+
   return (
     <main className="container mx-auto py-8">
       <h1 className="mb-8 text-center text-4xl font-bold">The Hype Board</h1>
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex justify-between">
+        <Button onClick={() => setIsCreateModalOpen(true)}>Create Post</Button>
         <Button
           onClick={handleRefresh}
           disabled={isLoading}
@@ -67,6 +75,11 @@ export default function HomePage() {
           post={selectedPost}
         />
       )}
+      <CreatePostModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={handleCreatePostSuccess}
+      />
     </main>
   );
 }

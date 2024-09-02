@@ -23,6 +23,11 @@ export function Header({ className, ...props }: HeaderProps) {
   const pathname = usePathname();
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
 
+  const handleCreatePostSuccess = () => {
+    setIsCreatePostModalOpen(false);
+    // You might want to add additional logic here, such as refreshing the post list
+  };
+
   return (
     <>
       <header
@@ -56,6 +61,7 @@ export function Header({ className, ...props }: HeaderProps) {
       <CreatePostModal
         isOpen={isCreatePostModalOpen}
         onClose={() => setIsCreatePostModalOpen(false)}
+        onSuccess={handleCreatePostSuccess}
       />
     </>
   );
