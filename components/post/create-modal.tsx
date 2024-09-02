@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -15,9 +15,11 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
   const [postName, setPostName] = useState("");
   const [postDetails, setPostDetails] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [postURL, setPostURL] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +30,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
     formData.append("postName", postName);
     formData.append("postDetails", postDetails);
     formData.append("userEmail", userEmail);
+    formData.append("postURL", postURL);
     if (image) {
       formData.append("image", image);
     }
@@ -58,8 +61,17 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
     setPostName("");
     setPostDetails("");
     setUserEmail("");
+    setPostURL("");
     setImage(null);
     onClose();
+  };
+
+  const handleImageUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImage(e.target.files?.[0] || null);
   };
 
   return (
@@ -67,9 +79,9 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
       open={isOpen}
       onOpenChange={handleClose}
     >
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] font-['Proxima Nova', sans-serif]">
         <DialogHeader>
-          <DialogTitle>Create a New Post</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">Create a New Post</DialogTitle>
         </DialogHeader>
         <form
           onSubmit={handleSubmit}
@@ -85,46 +97,66 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
             </div>
           )}
           <div>
-            <Label htmlFor="postName">Post Name</Label>
+            <Label htmlFor="postName" className="block text-sm font-medium text-gray-700">Post Name</Label>
             <Input
               id="postName"
               value={postName}
               onChange={(e) => setPostName(e.target.value)}
               required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             />
           </div>
           <div>
-            <Label htmlFor="postDetails">Post Details</Label>
+            <Label htmlFor="postDetails" className="block text-sm font-medium text-gray-700">Post Details</Label>
             <Input
               id="postDetails"
               value={postDetails}
               onChange={(e) => setPostDetails(e.target.value)}
               required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             />
           </div>
           <div>
-            <Label htmlFor="userEmail">User Email</Label>
+            <Label htmlFor="userEmail" className="block text-sm font-medium text-gray-700">User Email</Label>
             <Input
               id="userEmail"
               type="email"
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
               required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             />
           </div>
           <div>
-            <Label htmlFor="image">Image</Label>
+            <Label htmlFor="postURL" className="block text-sm font-medium text-gray-700">Post URL</Label>
             <Input
+              id="postURL"
+              type="url"
+              value={postURL}
+              onChange={(e) => setPostURL(e.target.value)}
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+          <div className="flex items-center">
+            <input
+              ref={fileInputRef}
               id="image"
               type="file"
               accept="image/*"
-              onChange={(e) => setImage(e.target.files?.[0] || null)}
+              onChange={handleFileChange}
+              className="hidden"
               required
             />
+            <Button type="button" onClick={handleImageUpload} className="mr-2">
+              {image ? "Change Image" : "Upload Image"}
+            </Button>
+            {image && <span className="text-sm text-gray-600">{image.name}</span>}
           </div>
           <Button
             type="submit"
             disabled={isSubmitting}
+            className="w-full bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             {isSubmitting ? "Creating..." : "Create Post"}
           </Button>

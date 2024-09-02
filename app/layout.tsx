@@ -29,8 +29,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           "flex h-screen w-full min-w-80 max-w-full flex-col overflow-y-auto overflow-x-hidden",
         )}
       >
-        <Header />
-        <main className="flex-grow pt-16">{children}</main>
+        <Header className="fixed top-0 left-0 right-0 z-50" />
+        <main className="flex-grow pt-20">{children}</main>
       </body>
     </html>
   );

@@ -32,9 +32,10 @@ export async function POST(req: NextRequest) {
     const postName = formData.get("postName") as string;
     const postDetails = formData.get("postDetails") as string;
     const userEmail = formData.get("userEmail") as string;
+    const postURL = formData.get("postURL") as string;
     const image = formData.get("image") as File;
 
-    if (!postName || !postDetails || !userEmail || !image) {
+    if (!postName || !postDetails || !userEmail || !postURL || !image) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -43,8 +44,6 @@ export async function POST(req: NextRequest) {
     const imagePath = path.join(process.cwd(), "public", "images", imageFileName);
 
     await writeFile(imagePath, buffer);
-
-    const postURL = `${process.env.NEXT_PUBLIC_APP_URL}/posts/${Date.now()}`;
 
     const newPost = await createPost({
       postName,
