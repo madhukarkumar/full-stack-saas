@@ -55,7 +55,7 @@ export default function HomePage() {
     <main className="container mx-auto py-8">
       <h1 className="mb-8 text-center text-4xl font-bold">The Hype Board</h1>
       <div className="mb-4 flex justify-between">
-        <Button onClick={() => setIsCreateModalOpen(true)}>Create Post</Button>
+        <Button className="ml-auto" onClick={() => setIsCreateModalOpen(true)}>Create Post</Button>
         
       </div>
       <PostsGrid

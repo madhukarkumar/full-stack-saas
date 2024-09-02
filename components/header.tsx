@@ -15,7 +15,7 @@ export type HeaderProps = ComponentProps<"header">;
 
 const links = [
   { title: "Home", href: ROUTES.ROOT },
-  { title: "Users", href: ROUTES.USERS },
+  { title: "Post", href: "#" }, // We'll use "#" as a placeholder for now
   { title: "Login", href: ROUTES.CHAT },
 ];
 
@@ -26,6 +26,11 @@ export function Header({ className, ...props }: HeaderProps) {
   const handleCreatePostSuccess = () => {
     setIsCreatePostModalOpen(false);
     // You might want to add additional logic here, such as refreshing the post list
+  };
+
+  const handlePostClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setIsCreatePostModalOpen(true);
   };
 
   return (
@@ -52,10 +57,14 @@ export function Header({ className, ...props }: HeaderProps) {
               variant={pathname === link.href ? "default" : "ghost"}
               className="transition-colors"
             >
-              <Link href={link.href}>{link.title}</Link>
+              <Link 
+                href={link.href}
+                onClick={link.title === "Post" ? handlePostClick : undefined}
+              >
+                {link.title}
+              </Link>
             </Button>
           ))}
-          <Button onClick={() => setIsCreatePostModalOpen(true)}>Post</Button>
         </nav>
       </header>
       <CreatePostModal
