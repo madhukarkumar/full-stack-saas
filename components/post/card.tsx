@@ -10,12 +10,14 @@ import { Post } from "@/types/post";
 
 interface PostCardProps {
   post: Post;
+  onClick: () => void;
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post, onClick }: PostCardProps) {
   const [votes, setVotes] = useState(post.postVotes);
 
-  const handleUpvote = async () => {
+  const handleUpvote = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent the card click event from firing
     try {
       const response = await fetch(`/api/posts/${post.post_id}/upvote`, {
         method: "POST",
@@ -30,15 +32,15 @@ export function PostCard({ post }: PostCardProps) {
     }
   };
 
-  // Generate a random image URL
-  const imageUrl = `https://picsum.photos/seed/${post.post_id}/400/300`;
-
   return (
-    <Card className="w-full overflow-hidden rounded-lg border-2 border-gray-300 shadow-md">
+    <Card
+      className="w-full cursor-pointer overflow-hidden rounded-lg border-2 border-gray-300 shadow-md"
+      onClick={onClick}
+    >
       <CardHeader className="p-0">
         <div className="relative h-48 w-full overflow-hidden">
           <Image
-            src={imageUrl}
+            src={post.postImageURL}
             alt={post.postName}
             layout="fill"
             objectFit="cover"
@@ -65,6 +67,7 @@ export function PostCard({ post }: PostCardProps) {
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-500 hover:underline"
+          onClick={(e) => e.stopPropagation()} // Prevent the card click event from firing
         >
           View
         </a>

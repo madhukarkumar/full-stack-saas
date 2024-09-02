@@ -1,4 +1,5 @@
-import Image from 'next/image';
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 import { ComponentProps } from "@/types/ui";
 
@@ -17,9 +18,7 @@ export function Logo({ className, ...props }: LogoProps) {
         height={84}
         className="rounded-full"
       />
-      <span className="proxima-nova text-2xl font-bold">
-        Ride the Hype
-      </span>
+      <span className="proxima-nova text-2xl font-bold">Ride the Hype</span>
     </div>
   );
 }

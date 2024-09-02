@@ -30,9 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         )}
       >
         <Header />
-        <main className="flex-grow pt-16">
-          {children}
-        </main>
+        <main className="flex-grow pt-16">{children}</main>
       </body>
     </html>
   );

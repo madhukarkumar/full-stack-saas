@@ -8,7 +8,7 @@ const dbConfig = {
   host: "svc-291ecb7f-d2d2-4243-ac62-8219b36fada0-dml.aws-oregon-3.svc.singlestore.com", // Replace with your MySQL host
   user: "admin", // Replace with your MySQL username
   password: "SingleStore2024", // Replace with your MySQL password
-  database: "mkstartupupvote" // Replace with your MySQL database name
+  database: "mkstartupupvote", // Replace with your MySQL database name
 };
 
 function withDirname(metaUrl, relativePath) {
@@ -26,14 +26,14 @@ function createBook(book) {
     reviews: book.reviews,
     embeddingCollectionName: book.embeddingCollectionName,
     createdAt: book.createdAt || new Date().toISOString(),
-    subjects: book.subjects || []
+    subjects: book.subjects || [],
   };
 }
 
 async function main() {
   const datasetPaths = {
     books: withDirname(__filename, "../datasets/books.json"),
-    booksWithContentEmbeddings: withDirname(__filename, "../datasets/booksWithContentEmbeddings.json")
+    booksWithContentEmbeddings: withDirname(__filename, "../datasets/booksWithContentEmbeddings.json"),
   };
 
   const datasets = {};
@@ -47,9 +47,11 @@ async function main() {
     }
   }
 
-  const booksWithEmbeddings = datasets.booksWithContentEmbeddings.map(book => createBook(book));
+  const booksWithEmbeddings = datasets.booksWithContentEmbeddings.map((book) => createBook(book));
 
-  const books = [...datasets.books, ...booksWithEmbeddings].map(({ content, embeddings, ...book }) => createBook(book));
+  const books = [...datasets.books, ...booksWithEmbeddings].map(({ content, embeddings, ...book }) =>
+    createBook(book),
+  );
 
   await mysqlSetup();
 
@@ -57,8 +59,8 @@ async function main() {
     const mysqlEleganceServerClient = createEleganceServerClient("mysql", {
       connection: dbConfig,
       openai: {
-        apiKey: "your_openai_api_key" // Replace with your OpenAI API key if needed
-      }
+        apiKey: "your_openai_api_key", // Replace with your OpenAI API key if needed
+      },
     });
 
     const { connection } = mysqlEleganceServerClient;
@@ -90,13 +92,13 @@ async function main() {
 
       const mysqlBooks = books.map(({ embeddings, subjects, ...book }) => ({
         ...book,
-        subjects: subjects.join(", ")
+        subjects: subjects.join(", "),
       }));
 
       // Using INSERT IGNORE to skip duplicates based on primary key (id)
       await connection.query(
         `INSERT IGNORE INTO ${tablePath("books")} (${Object.keys(mysqlBooks[0]).join(", ")}) VALUES ?`,
-        [mysqlBooks.map(Object.values)]
+        [mysqlBooks.map(Object.values)],
       );
 
       console.log(`MySQL: Inserted ${mysqlBooks.length} books (skipping any existing duplicates).`);
@@ -106,7 +108,7 @@ async function main() {
   process.exit(0);
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.error("An error occurred:", error);
   process.exit(1);
 });
