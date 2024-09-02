@@ -2,7 +2,7 @@ import { eleganceServerClient } from "@/lib/elegance/server-client";
 import { Post, PostRow } from "@/types/post";
 
 export async function getPosts(filter: { offset?: number; limit?: number } = {}): Promise<Post[]> {
-  const { offset = 0, limit = 10 } = filter;
+  const { offset = 0, limit = 50 } = filter;
 
   const posts = await eleganceServerClient.controllers.findMany<PostRow[]>({
     collection: "startupPosts",
