@@ -56,12 +56,7 @@ export default function HomePage() {
       <h1 className="mb-8 text-center text-4xl font-bold">The Hype Board</h1>
       <div className="mb-4 flex justify-between">
         <Button onClick={() => setIsCreateModalOpen(true)}>Create Post</Button>
-        <Button
-          onClick={handleRefresh}
-          disabled={isLoading}
-        >
-          {isLoading ? "Refreshing..." : "Refresh Feed"}
-        </Button>
+        
       </div>
       <PostsGrid
         onPostClick={handlePostClick}
