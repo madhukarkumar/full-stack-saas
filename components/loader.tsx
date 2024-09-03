@@ -9,12 +9,10 @@ export function Loader({ className, ...props }: LoaderProps) {
       {...props}
       className={cn(
         "fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-75",
-        className
+        className,
       )}
     >
-      <span
-        className="flex h-[100px] w-[100px] items-center justify-center fill-primary text-zinc-200 dark:text-zinc-700"
-      >
+      <span className="flex h-[100px] w-[100px] items-center justify-center fill-primary text-zinc-200 dark:text-zinc-700">
         <svg
           aria-hidden="true"
           className="inline h-full w-full animate-spin fill-inherit"

@@ -57,7 +57,7 @@ export function Header({ className, ...props }: HeaderProps) {
               variant={pathname === link.href ? "default" : "ghost"}
               className="transition-colors"
             >
-              <Link 
+              <Link
                 href={link.href}
                 onClick={link.title === "Post" ? handlePostClick : undefined}
               >

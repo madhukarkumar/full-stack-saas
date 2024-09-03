@@ -79,7 +79,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
       open={isOpen}
       onOpenChange={handleClose}
     >
-      <DialogContent className="sm:max-w-[425px] font-['Proxima Nova', sans-serif]">
+      <DialogContent className="font-['Proxima Nova', sans-serif] sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">Create a New Post</DialogTitle>
         </DialogHeader>
@@ -97,7 +97,12 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
             </div>
           )}
           <div>
-            <Label htmlFor="postName" className="block text-sm font-medium text-gray-700">Post Name</Label>
+            <Label
+              htmlFor="postName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Post Name
+            </Label>
             <Input
               id="postName"
               value={postName}
@@ -107,7 +112,12 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
             />
           </div>
           <div>
-            <Label htmlFor="postDetails" className="block text-sm font-medium text-gray-700">Post Details</Label>
+            <Label
+              htmlFor="postDetails"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Post Details
+            </Label>
             <Input
               id="postDetails"
               value={postDetails}
@@ -117,7 +127,12 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
             />
           </div>
           <div>
-            <Label htmlFor="userEmail" className="block text-sm font-medium text-gray-700">User Email</Label>
+            <Label
+              htmlFor="userEmail"
+              className="block text-sm font-medium text-gray-700"
+            >
+              User Email
+            </Label>
             <Input
               id="userEmail"
               type="email"
@@ -128,7 +143,12 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
             />
           </div>
           <div>
-            <Label htmlFor="postURL" className="block text-sm font-medium text-gray-700">Post URL</Label>
+            <Label
+              htmlFor="postURL"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Post URL
+            </Label>
             <Input
               id="postURL"
               type="url"
@@ -148,7 +168,11 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
               className="hidden"
               required
             />
-            <Button type="button" onClick={handleImageUpload} className="mr-2">
+            <Button
+              type="button"
+              onClick={handleImageUpload}
+              className="mr-2"
+            >
               {image ? "Change Image" : "Upload Image"}
             </Button>
             {image && <span className="text-sm text-gray-600">{image.name}</span>}

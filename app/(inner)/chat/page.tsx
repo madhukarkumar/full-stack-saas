@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Chat" };
 export default async function ChatPage() {
   const books = await getBooks();
   return (
-    <div className="flex flex-col h-[calc(100vh-5rem)] pt-4 px-4">
+    <div className="flex h-[calc(100vh-5rem)] flex-col px-4 pt-4">
       <ChatContainer books={books} />
     </div>
   );
