@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Book } from "@/types/book";
 import { ComponentProps } from "@/types/ui";
+//import { useChat } from 'ai/react';
 
 export type ChatContainerProps = ComponentProps<"div", { books: Book[] }>;
 
@@ -27,6 +28,18 @@ const formSchema = z.object({
 });
 
 type FormSchema = z.infer<typeof formSchema>;
+
+const functions = [
+  {
+    name: "getPopularBooks",
+    description: "Get a list of popular books",
+    parameters: {
+      type: "object",
+      properties: {},
+      required: [],
+    },
+  },
+];
 
 export function ChatContainer({ className, books, ...props }: ChatContainerProps) {
   const [activeBook, setActiveBook] = useState<Book["embeddingCollectionName"]>("");
@@ -80,7 +93,7 @@ export function ChatContainer({ className, books, ...props }: ChatContainerProps
   return (
     <div
       {...props}
-      className={cn("mx-auto flex w-full max-w-6xl flex-1 flex-col gap-4", className)}
+      className={cn("mx-auto flex h-full w-full max-w-6xl flex-1 flex-col gap-4", className)}
     >
       <Card className="relative flex flex-1 flex-col overflow-hidden">
         <div className="flex items-center justify-center border-b p-4">

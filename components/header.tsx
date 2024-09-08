@@ -1,5 +1,6 @@
 "use client";
 
+import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -16,12 +17,13 @@ export type HeaderProps = ComponentProps<"header">;
 const links = [
   { title: "Home", href: ROUTES.ROOT },
   { title: "Post", href: "#" }, // We'll use "#" as a placeholder for now
-  { title: "Login", href: ROUTES.CHAT },
+  { title: "RAG", href: ROUTES.CHAT },
 ];
 
 export function Header({ className, ...props }: HeaderProps) {
   const pathname = usePathname();
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  const { isSignedIn } = useUser();
 
   const handleCreatePostSuccess = () => {
     setIsCreatePostModalOpen(false);
@@ -65,6 +67,13 @@ export function Header({ className, ...props }: HeaderProps) {
               </Link>
             </Button>
           ))}
+          {isSignedIn ? (
+            <UserButton afterSignOutUrl={ROUTES.ROOT} />
+          ) : (
+            <SignInButton mode="modal">
+              <Button variant="outline">Sign In</Button>
+            </SignInButton>
+          )}
         </nav>
       </header>
       <CreatePostModal

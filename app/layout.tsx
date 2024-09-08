@@ -1,3 +1,4 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 
@@ -20,23 +21,15 @@ export const metadata: Metadata = {
   description: "Full stack Next.js app with SingleStore, Elegance SDK & NextJS for real-time intelligent apps",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className="h-full"
-    >
-      <Analytics />
-      <body
-        className={cn(
-          inter.className,
-          "flex h-full w-full min-w-80 max-w-full flex-col overflow-y-auto overflow-x-hidden",
-        )}
-      >
-        <Header className="fixed left-0 right-0 top-0 z-50" />
-        <main className="flex-grow pb-16 pt-20">{children}</main>
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <Header />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
