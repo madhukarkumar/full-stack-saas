@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SendHorizontal } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Markdown from "react-markdown";
 import { z } from "zod";
@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Book } from "@/types/book";
 import { ComponentProps } from "@/types/ui";
-//import { useChat } from 'ai/react';
 
 export type ChatContainerProps = ComponentProps<"div", { books: Book[] }>;
 
@@ -42,10 +41,18 @@ const functions = [
 ];
 
 export function ChatContainer({ className, books, ...props }: ChatContainerProps) {
-  const [activeBook, setActiveBook] = useState<Book["embeddingCollectionName"]>("");
+  const [activeBook, setActiveBook] = useState<Book["embeddingCollectionName"]>(
+    books.length > 0 ? books[0].embeddingCollectionName : "",
+  );
 
-  const [messages, setMessages] = useState<Record<Book["embeddingCollectionName"], Message[]>>(
-    books.reduce((acc, book) => ({ ...acc, [book.embeddingCollectionName]: [] }), {}),
+  const [messages, setMessages] = useState<Record<string, Message[]>>(() =>
+    books.reduce(
+      (acc, book) => ({
+        ...acc,
+        [book.embeddingCollectionName]: [],
+      }),
+      {} as Record<string, Message[]>,
+    ),
   );
 
   const { execute, isLoading } = eleganceClient.hooks.useSearchChatCompletion();
@@ -56,6 +63,8 @@ export function ChatContainer({ className, books, ...props }: ChatContainerProps
   });
 
   const handleSubmit: SubmitHandler<FormSchema> = async (values) => {
+    if (!activeBook) return;
+
     try {
       setMessages((messages) => ({
         ...messages,
@@ -90,6 +99,8 @@ export function ChatContainer({ className, books, ...props }: ChatContainerProps
     }
   };
 
+  const currentMessages = activeBook ? messages[activeBook] || [] : [];
+
   return (
     <div
       {...props}
@@ -97,7 +108,10 @@ export function ChatContainer({ className, books, ...props }: ChatContainerProps
     >
       <Card className="relative flex flex-1 flex-col overflow-hidden">
         <div className="flex items-center justify-center border-b p-4">
-          <Select onValueChange={setActiveBook}>
+          <Select
+            value={activeBook}
+            onValueChange={setActiveBook}
+          >
             <SelectTrigger className="w-64">
               <SelectValue placeholder="Select book" />
             </SelectTrigger>
@@ -117,31 +131,30 @@ export function ChatContainer({ className, books, ...props }: ChatContainerProps
         <div className="relative flex-1">
           <div className="absolute left-0 top-0 flex h-full w-full flex-col-reverse overflow-x-hidden overflow-y-scroll p-4">
             <ul className="flex flex-col gap-4">
-              {activeBook &&
-                messages[activeBook].map((message) => {
-                  const date = new Date(message.createdAt).toLocaleTimeString("en-US", { hour12: false });
-                  return (
-                    <li
-                      key={message.createdAt}
-                      className={cn("max-w-[75%]", message.role === "user" && "self-end")}
-                    >
-                      <Card className="px-4 py-2">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium capitalize">{message.role}</h4>
-                          <time
-                            className="text-xs text-muted-foreground"
-                            dateTime={date}
-                          >
-                            {date}
-                          </time>
-                        </div>
-                        <div className="mt-1 w-full max-w-full [&_pre]:overflow-auto">
-                          <Markdown>{message.content}</Markdown>
-                        </div>
-                      </Card>
-                    </li>
-                  );
-                })}
+              {currentMessages.map((message) => {
+                const date = new Date(message.createdAt).toLocaleTimeString("en-US", { hour12: false });
+                return (
+                  <li
+                    key={message.createdAt}
+                    className={cn("max-w-[75%]", message.role === "user" && "self-end")}
+                  >
+                    <Card className="px-4 py-2">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium capitalize">{message.role}</h4>
+                        <time
+                          className="text-xs text-muted-foreground"
+                          dateTime={date}
+                        >
+                          {date}
+                        </time>
+                      </div>
+                      <div className="mt-1 w-full max-w-full [&_pre]:overflow-auto">
+                        <Markdown>{message.content}</Markdown>
+                      </div>
+                    </Card>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -169,7 +182,7 @@ export function ChatContainer({ className, books, ...props }: ChatContainerProps
                     {...field}
                     className="h-12 py-0 pl-4 pr-20 text-base"
                     placeholder="Message"
-                    disabled={isLoading}
+                    disabled={isLoading || !activeBook}
                   />
                 </FormControl>
               </FormItem>
@@ -179,7 +192,7 @@ export function ChatContainer({ className, books, ...props }: ChatContainerProps
           <Button
             type="submit"
             className="absolute right-0 top-1/2 h-full -translate-y-1/2 rounded-bl-none rounded-tl-none"
-            disabled={isLoading}
+            disabled={isLoading || !activeBook}
           >
             <SendHorizontal />
           </Button>

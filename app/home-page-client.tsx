@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 
 import CreatePostModal from "@/components/post/create-modal";
 import { PostsGrid } from "@/components/post/grid";
@@ -16,6 +17,7 @@ export default function HomePageClient({ initialPosts }: HomePageClientProps) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [posts, setPosts] = useState(initialPosts);
+  const { isSignedIn } = useAuth();
 
   const openCreateModal = () => setIsCreateModalOpen(true);
   const closeCreateModal = () => setIsCreateModalOpen(false);
@@ -53,6 +55,7 @@ export default function HomePageClient({ initialPosts }: HomePageClientProps) {
         isOpen={isCreateModalOpen}
         onClose={closeCreateModal}
         onSuccess={handleCreatePostSuccess}
+        isAuthenticated={isSignedIn ?? false}
       />
       {selectedPost && (
         <PostModal

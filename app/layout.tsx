@@ -1,12 +1,10 @@
-import { ClerkProvider } from "@clerk/nextjs";
-import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
-
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 
 import { cn } from "@/lib/utils";
 import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
+import { HeaderWrapper } from "./HeaderWrapper";
 
 import "./globals.css";
 
@@ -23,11 +21,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
-        <body>
-          <Header />
+        <body className={cn(inter.className, "min-h-screen bg-background antialiased")}>
+          <HeaderWrapper />
           {children}
+          <Footer />
         </body>
       </html>
     </ClerkProvider>

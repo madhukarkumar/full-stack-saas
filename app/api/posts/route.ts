@@ -1,6 +1,7 @@
 import { writeFile } from "fs/promises";
 import path from "path";
 
+import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 import { createPost } from "@/lib/post/create";
@@ -28,6 +29,12 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const { userId } = getAuth(req);
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const formData = await req.formData();
     const postName = formData.get("postName") as string;
     const postDetails = formData.get("postDetails") as string;

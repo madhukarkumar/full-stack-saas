@@ -12,15 +12,16 @@ import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import { ComponentProps } from "@/types/ui";
 
-export type HeaderProps = ComponentProps<"header">;
+export type HeaderProps = ComponentProps<
+  "header",
+  {
+    showPostButton?: boolean;
+  }
+>;
 
-const links = [
-  { title: "Home", href: ROUTES.ROOT },
-  { title: "Post", href: "#" }, // We'll use "#" as a placeholder for now
-  { title: "RAG", href: ROUTES.CHAT },
-];
+const links = [{ title: "Home", href: ROUTES.ROOT }];
 
-export function Header({ className, ...props }: HeaderProps) {
+export function Header({ className, showPostButton = true, ...props }: HeaderProps) {
   const pathname = usePathname();
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
   const { isSignedIn } = useUser();
@@ -59,14 +60,23 @@ export function Header({ className, ...props }: HeaderProps) {
               variant={pathname === link.href ? "default" : "ghost"}
               className="transition-colors"
             >
-              <Link
-                href={link.href}
-                onClick={link.title === "Post" ? handlePostClick : undefined}
-              >
-                {link.title}
-              </Link>
+              <Link href={link.href}>{link.title}</Link>
             </Button>
           ))}
+          {showPostButton && (
+            <Button
+              asChild
+              variant="ghost"
+              className="transition-colors"
+            >
+              <Link
+                href="#"
+                onClick={handlePostClick}
+              >
+                Post
+              </Link>
+            </Button>
+          )}
           {isSignedIn ? (
             <UserButton afterSignOutUrl={ROUTES.ROOT} />
           ) : (
@@ -76,11 +86,14 @@ export function Header({ className, ...props }: HeaderProps) {
           )}
         </nav>
       </header>
-      <CreatePostModal
-        isOpen={isCreatePostModalOpen}
-        onClose={() => setIsCreatePostModalOpen(false)}
-        onSuccess={handleCreatePostSuccess}
-      />
+      {showPostButton && (
+        <CreatePostModal
+          isOpen={isCreatePostModalOpen}
+          onClose={() => setIsCreatePostModalOpen(false)}
+          onSuccess={handleCreatePostSuccess}
+          isAuthenticated={isSignedIn ?? false}
+        />
+      )}
     </>
   );
 }
