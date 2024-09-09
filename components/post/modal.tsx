@@ -31,15 +31,17 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, post }) => {
               className="rounded-md"
             />
           </div>
-          <p className="text-sm text-gray-500">{post.postDetails}</p>
-          <p className="text-sm font-semibold">User Email: {post.userEmail}</p>
+          <div className="max-h-96 overflow-y-auto">
+            <p className="text-sm text-gray-500 whitespace-pre-wrap">{post.postDetails}</p>
+          </div>
+          {/*  <p className="text-sm font-semibold">User Email: {post.userEmail}</p>  */}
           <Button asChild>
             <a
               href={post.postURL}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Visit Post
+              Visit Website
             </a>
           </Button>
         </div>
