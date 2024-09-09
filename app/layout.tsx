@@ -17,6 +17,16 @@ export const metadata: Metadata = {
     template: `${title} - %s`,
   },
   description: "Full stack Next.js app with SingleStore, Elegance SDK & NextJS for real-time intelligent apps",
+  openGraph: {
+    images: [
+      {
+        url: '/images/opengraph.png',
+        width: 1200,
+        height: 630,
+        alt: 'AI Startup Leaderboard',
+      },
+    ],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
