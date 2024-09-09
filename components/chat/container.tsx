@@ -106,8 +106,8 @@ export function ChatContainer({ className, books, ...props }: ChatContainerProps
       {...props}
       className={cn("mx-auto flex h-full w-full max-w-6xl flex-1 flex-col gap-4", className)}
     >
-      <Card className="relative flex flex-1 flex-col overflow-hidden">
-        <div className="flex items-center justify-center border-b p-4">
+      <Card className="relative flex flex-1 flex-col">
+        <div className="sticky top-20 z-10 flex items-center justify-center border-b bg-background p-4">
           <Select
             value={activeBook}
             onValueChange={setActiveBook}
@@ -128,8 +128,8 @@ export function ChatContainer({ className, books, ...props }: ChatContainerProps
           </Select>
         </div>
 
-        <div className="relative flex-1">
-          <div className="absolute left-0 top-0 flex h-full w-full flex-col-reverse overflow-x-hidden overflow-y-scroll p-4">
+        <div className="flex-1 overflow-hidden">
+          <div className="h-full overflow-y-auto p-4">
             <ul className="flex flex-col gap-4">
               {currentMessages.map((message) => {
                 const date = new Date(message.createdAt).toLocaleTimeString("en-US", { hour12: false });

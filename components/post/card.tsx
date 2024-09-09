@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Post } from "@/types/post";
+import { useAuth } from "@clerk/nextjs";
 
 interface PostCardProps {
   post: Post;
@@ -15,6 +16,7 @@ interface PostCardProps {
 
 export function PostCard({ post, onClick }: PostCardProps) {
   const [votes, setVotes] = useState(post.postVotes);
+  const { isSignedIn } = useAuth();
 
   const handleUpvote = async (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent the card click event from firing
@@ -56,7 +58,7 @@ export function PostCard({ post, onClick }: PostCardProps) {
         <Button
           variant="outline"
           size="sm"
-          onClick={handleUpvote}
+          onClick={isSignedIn ? handleUpvote : () => window.location.href = '/sign-up'}
           className="rounded-md"
         >
           <ChevronUp className="mr-1 h-4 w-4" />
