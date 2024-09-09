@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState, useRef } from "react";
+import type { PutBlobResult } from '@vercel/blob';
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -25,29 +26,46 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const [blob, setBlob] = useState<PutBlobResult | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isAuthenticated) {
-      router.push("/sign-up");
-      return;
+  const uploadImage = async (file: File): Promise<string> => {
+    const filename = encodeURIComponent(file.name);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`/api/upload?filename=${filename}`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to upload image');
     }
-    setError(null);
+
+    const data = await response.json();
+    return data.url;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsSubmitting(true);
 
-    const formData = new FormData();
-    formData.append("postName", postName);
-    formData.append("postDetails", postDetails);
-    formData.append("userEmail", userEmail);
-    formData.append("postURL", postURL);
-    if (image) {
-      formData.append("image", image);
-    }
-
     try {
-      const response = await fetch("/api/posts", {
-        method: "POST",
+      const formData = new FormData();
+      formData.append('postName', postName);
+      formData.append('postDetails', postDetails);
+      formData.append('userEmail', userEmail);
+      formData.append('postURL', postURL);
+      if (image) {
+        formData.append('image', image);
+      }
+
+      const response = await fetch('/api/posts', {
+        method: 'POST',
         body: formData,
+        // Remove the 'Content-Type' header
+        // The browser will automatically set the correct Content-Type
+        // with the boundary for multipart/form-data
       });
 
       if (response.ok) {
@@ -58,8 +76,8 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
         setError(errorData.error || "Failed to create post");
       }
     } catch (error) {
-      setError("Error creating post. Please try again.");
-      console.error("Error creating post:", error);
+      console.error('Error creating post:', error);
+      setError('Failed to create post. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -98,6 +116,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
           <form
             onSubmit={handleSubmit}
             className="grid gap-4 py-4"
+            encType="multipart/form-data"
           >
             {error && (
               <div
@@ -178,7 +197,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onSu
                 accept="image/*"
                 onChange={handleFileChange}
                 className="hidden"
-                required
+                aria-label="Upload Image"
               />
               <Button
                 type="button"
